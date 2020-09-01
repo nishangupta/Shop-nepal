@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import VueTextareaAutosize from 'vue-textarea-autosize'
+import VueRouter from 'vue-router'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-Vue.use(VueTextareaAutosize)
+import routes from './routes.js'
 
-firebase.initializeApp({
+Vue.use(VueRouter)
+
+export const db = firebase.initialize({
   apiKey: 'AIzaSyAi81-Qam0iHvJ2pJwLLMJ_Ga3iYwQf2-w',
   authDomain: 'vue-calendar-b876e.firebaseapp.com',
   databaseURL: 'https://vue-calendar-b876e.firebaseio.com',
@@ -18,9 +20,10 @@ firebase.initializeApp({
   measurementId: 'G-1SEG4S419W',
 })
 
-export const db = firebase.firestore()
+const router = new VueRouter({ mode: 'history', routes })
 
 new Vue({
+  router,
   vuetify,
   render: (h) => h(App),
 }).$mount('#app')
