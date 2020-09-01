@@ -6,14 +6,17 @@ const routes = [
   {
     path: '/',
     component: Dashborad,
+    name: 'dashboard',
   },
   {
     path: '/team',
     component: Team,
+    name: 'team',
   },
   {
     path: '/projects',
     component: Projects,
+    name: 'projects',
   },
 ]
 
