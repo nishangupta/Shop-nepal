@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import db from "@/main";
+import { db } from "@/main";
 export default {
   data() {
     return {
@@ -95,8 +95,15 @@ export default {
     };
   },
   methods: {
-    addProject() {
+    async addProject() {
       if (this.$refs.form.validate()) {
+        await db.collection("projects").add({
+          name: this.name,
+          title: this.title,
+          due: this.formattedDate,
+          status: this.status,
+          content: this.content,
+        });
       }
       this.resetVariables();
       this.closeDialog();
