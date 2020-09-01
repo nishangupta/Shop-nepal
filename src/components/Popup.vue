@@ -69,20 +69,20 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="grey" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="addProject">Add</v-btn>
+        <v-btn color="blue darken-1" text @click="addProject" :loading="isLoading">Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { db } from "@/main";
+import db from "@/fb";
 export default {
   data() {
     return {
       dialog: false,
       title: "",
-      name: "",
+      name: "The Net Ninja",
       date: "",
       content:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!",
@@ -92,13 +92,15 @@ export default {
         (v) => !!v || "Field is required",
         (v) => v.length >= 3 || "Minimum length is 3 characters",
       ],
+      isLoading: false,
     };
   },
   methods: {
     async addProject() {
       if (this.$refs.form.validate()) {
+        this.isLoading = true;
         await db.collection("projects").add({
-          name: this.name,
+          person: this.name,
           title: this.title,
           due: this.formattedDate,
           status: this.status,
@@ -107,6 +109,8 @@ export default {
       }
       this.resetVariables();
       this.closeDialog();
+      this.isLoading = false;
+      this.$emit("projectAdded");
     },
     resetVariables() {
       this.title = "";
