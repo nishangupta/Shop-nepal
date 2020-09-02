@@ -53,9 +53,11 @@
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" color="primary darken-1" dark app>
       <v-app-bar-nav-icon @click.stop="drawer =!drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title style="width:300px" class="ml-0 pl-4">
-        <span>Mini Store</span>
-      </v-toolbar-title>
+      <router-link to="/" class="white--text text-decoration-none">
+        <v-toolbar-title style="width:300px" class="ml-0 pl-4">
+          <span>Shop Nepal</span>
+        </v-toolbar-title>
+      </router-link>
       <v-text-field
         flat
         solo-inverted
@@ -108,8 +110,8 @@ export default {
       searchInput: "",
       cartCount: 2,
       appDrawer: [
-        { icon: "shop", text: "Shop Nepal", route: "/shop" },
-        { icon: "admin_panel_settings", text: "My Account", route: "/" },
+        { icon: "shop", text: "Shop Nepal", route: "/" },
+        { icon: "admin_panel_settings", text: "My Account", route: "/profile" },
         { icon: "dns", text: "Address book", route: "/address-book" },
         {
           icon: "payment",
@@ -134,7 +136,7 @@ export default {
         { icon: "exit_to_app", text: "Logout", route: "/logout" },
       ],
       account_nav_list: [
-        { icon: "account_box", text: "Manage your account", route: "/" },
+        { icon: "account_box", text: "Manage your account", route: "/profile" },
         { icon: "border_all", text: "My orders", route: "/orders" },
         {
           icon: "favorite",
