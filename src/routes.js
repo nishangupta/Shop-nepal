@@ -1,22 +1,28 @@
-import Dashborad from './views/Dashboard'
-import Team from './views/Team'
-import Projects from './views/Projects'
+import NotFound from './pages/NotFound'
+import Profile from './pages/Profile'
+import AddressBook from './pages/AddressBook'
+import PaymentOption from './pages/PaymentOption'
 
 const routes = [
   {
     path: '/',
-    component: Dashborad,
-    name: 'dashboard',
+    component: Profile,
+    name: 'profile',
   },
   {
-    path: '/team',
-    component: Team,
-    name: 'team',
+    path: '/address-book',
+    component: AddressBook,
+    name: 'addressbook',
   },
   {
-    path: '/projects',
-    component: Projects,
-    name: 'projects',
+    path: '/payment-option',
+    component: PaymentOption,
+    name: 'paymentOption',
+  },
+  {
+    path: '*',
+    component: NotFound,
+    name: 'notFound',
   },
 ]
 

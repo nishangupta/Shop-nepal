@@ -1,0 +1,157 @@
+<template>
+  <div>
+    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
+      <v-list dense>
+        <template v-for="item in appDrawer">
+          <v-list-item v-if="item.heading" :key="item.text" router :to="item.route">
+            <v-list-item-action>
+              <v-icon>{{item.icon}}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{item.text}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-group
+            v-else-if="item.children"
+            :key="item.text"
+            v-model="item.model"
+            :prepend-icon="item.model ? item.icon: item['icon-alt']"
+            append-icon
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>{{item.text}}</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item
+              v-for="(child,i) in item.children"
+              :key="i"
+              link
+              router
+              :to="item.children.route"
+            >
+              <v-list-item-action v-if="child.icon">
+                <v-icon>{{child.icon}}</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{child.text}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <v-list-item v-else :key="item.text" link router :to="item.route">
+            <v-list-item-action>
+              <v-icon>{{item.icon}}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{item.text}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" color="primary darken-1" dark app>
+      <v-app-bar-nav-icon @click.stop="drawer =!drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title style="width:300px" class="ml-0 pl-4">
+        <span>Mini Store</span>
+      </v-toolbar-title>
+      <v-text-field
+        flat
+        solo-inverted
+        hide-details
+        label="Search"
+        class="hidden-md-and-down"
+        v-model="searchInput"
+      ></v-text-field>
+      <v-btn text class="hidden-md-and-down" large>
+        <v-icon>search</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+
+      <v-btn fab text>
+        <v-badge :content="cartCount" color="secondary">
+          <v-icon>shopping_cart</v-icon>
+        </v-badge>
+      </v-btn>
+
+      <div class="hidden-md-and-down">
+        <v-menu offset-y v-show="$vuetify.breakpoint.md">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" text v-on="on">
+              <v-icon left>expand_more</v-icon>Account
+            </v-btn>
+          </template>
+          <!-- account nav list -->
+          <v-list>
+            <v-list-item v-for="item in account_nav_list" :key="item.text" router :to="item.route">
+              <v-list-item-action>
+                <v-icon>{{item.icon}}</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{item.text}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+    </v-app-bar>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Appbar",
+  data() {
+    return {
+      drawer: null,
+      searchInput: "",
+      cartCount: 2,
+      appDrawer: [
+        { icon: "shop", text: "Shop Nepal", route: "/shop" },
+        { icon: "admin_panel_settings", text: "My Account", route: "/" },
+        { icon: "dns", text: "Address book", route: "/address-book" },
+        {
+          icon: "payment",
+          text: "My payment option",
+          route: "/payment-option",
+        },
+        { icon: "receipt", text: "Vouchers", route: "/vouchers" },
+        {
+          icon: "expand_less",
+          "icon-alt": "expand_more",
+          text: "My orders",
+          model: false,
+          children: [
+            { text: "Orders", route: "/orders" },
+            { text: "My returns", route: "/returns" },
+            { text: "My cancellations", route: "/cancelations" },
+          ],
+        },
+        { icon: "settings", text: "Settings", route: "/settings" },
+        { icon: "message", text: "Send feedback", route: "/message" },
+        { icon: "live_help", text: "Help", route: "/help" },
+        { icon: "exit_to_app", text: "Logout", route: "/logout" },
+      ],
+      account_nav_list: [
+        { icon: "account_box", text: "Manage your account", route: "/" },
+        { icon: "border_all", text: "My orders", route: "/orders" },
+        {
+          icon: "favorite",
+          text: "My wishlist & followed stores",
+          route: "/wishlist",
+        },
+        { icon: "exit_to_app", text: "Logout", route: "/logout" },
+      ],
+    };
+  },
+  methods: {
+    showAl() {
+      alert(123);
+    },
+  },
+};
+</script>
+
+<style>
+</style>

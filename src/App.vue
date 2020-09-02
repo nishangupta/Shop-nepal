@@ -1,17 +1,20 @@
 <template>
-  <v-app class="grey lighten-4">
-    <navbar />
-    <v-main class="mx-4">
-      <router-view></router-view>
+  <v-app>
+    <appbar />
+    <v-main>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Navbar from "./components/Navbar";
+import Appbar from "./components/Appbar";
 export default {
   name: "App",
-
-  components: { Navbar },
+  components: {
+    Appbar,
+  },
 };
 </script>
