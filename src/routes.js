@@ -4,6 +4,8 @@ import AddressBook from './pages/AddressBook'
 import PaymentOption from './pages/PaymentOption'
 import ProductList from './pages/ProductList'
 import Product from './pages/Product'
+import AddProduct from './pages/AddProduct'
+import ManageProduct from './pages/ManageProduct'
 
 const routes = [
   {
@@ -36,6 +38,16 @@ const routes = [
     path: '/shop/product/:id',
     component: Product,
     name: 'product',
+  },
+  {
+    path: '/product/add-product',
+    component: AddProduct,
+    name: 'addproduct',
+  },
+  {
+    path: '/product/manage-products',
+    component: ManageProduct,
+    name: 'manageProduct',
   },
   {
     path: '*',

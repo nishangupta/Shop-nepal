@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
         <template v-for="item in appDrawer">
-          <v-list-item v-if="item.heading" :key="item.text" router :to="item.route">
+          <v-list-item v-if="item.heading" :key="item.text" link router :to="item.route">
             <v-list-item-action>
               <v-icon>{{item.icon}}</v-icon>
             </v-list-item-action>
@@ -24,13 +24,7 @@
                 <v-list-item-title>{{item.text}}</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item
-              v-for="(child,i) in item.children"
-              :key="i"
-              link
-              router
-              :to="item.children.route"
-            >
+            <v-list-item v-for="(child,i) in item.children" :key="i" link router :to="child.route">
               <v-list-item-action v-if="child.icon">
                 <v-icon>{{child.icon}}</v-icon>
               </v-list-item-action>
@@ -128,6 +122,16 @@ export default {
             { text: "Orders", route: "/orders" },
             { text: "My returns", route: "/returns" },
             { text: "My cancellations", route: "/cancelations" },
+          ],
+        },
+        {
+          icon: "expand_less",
+          "icon-alt": "expand_more",
+          text: "Products",
+          model: false,
+          children: [
+            { text: "Manage products", route: "/product/manage-products" },
+            { text: "Add Product", route: "/product/add-product" },
           ],
         },
         { icon: "settings", text: "Settings", route: "/settings" },
