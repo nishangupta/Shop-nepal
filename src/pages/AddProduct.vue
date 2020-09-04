@@ -53,7 +53,7 @@ export default {
       priceRules: [
         (v) => !!v || "Field is required",
         (v) => !isNaN(v) || "Must be a number",
-        (v) => v.length >= 3 || "Minimum length is 5 characters",
+        (v) => v.length >= 3 || "Minimum length is 3 characters",
       ],
       isLoading: false,
     };

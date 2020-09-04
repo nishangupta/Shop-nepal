@@ -6,6 +6,7 @@ import ProductList from './pages/ProductList'
 import Product from './pages/Product'
 import AddProduct from './pages/AddProduct'
 import ManageProduct from './pages/ManageProduct'
+import LoginPage from './pages/LoginPage'
 
 const routes = [
   {
@@ -14,9 +15,14 @@ const routes = [
     name: 'productlist',
   },
   {
-    path: '/shop',
-    component: ProductList,
-    name: 'productlist',
+    path: '/login',
+    component: LoginPage,
+    name: 'loginPage',
+  },
+  {
+    path: '/manage-product',
+    component: ManageProduct,
+    name: 'manageProduct',
   },
   {
     path: '/profile',

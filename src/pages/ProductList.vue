@@ -21,7 +21,7 @@
             <router-link :to="{path:'shop/product/'+product.id}" class="text-decoration-none">
               <v-card-text class="pb-0 black--text">{{product.name}}</v-card-text>
             </router-link>
-            <v-card-title class="secondary--text pt-0">Rs. {{product.price}}</v-card-title>
+            <v-card-title class="secondary--text pt-0">Rs. {{formatPrice(product.price)}}</v-card-title>
 
             <v-spacer></v-spacer>
             <v-card-actions>
@@ -55,6 +55,10 @@ export default {
           return Number(a.price) < Number(b.price) ? 1 : -1;
         });
       }
+    },
+    formatPrice(value) {
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
   computed: {
