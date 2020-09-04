@@ -9,6 +9,7 @@
   </v-app>
 </template>
 
+
 <script>
 import Appbar from "./components/Appbar";
 import { mapActions } from "vuex";
