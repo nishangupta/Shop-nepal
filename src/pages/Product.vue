@@ -3,9 +3,9 @@
     <v-sheet>
       <v-layout row>
         <v-flex xs12 sm12 md4 xl3 class="pa-2">
-          <img src="/product.jpg" width="100%" />
+          <img :src="product.img" width="100%" />
         </v-flex>
-        <v-flex xs12 sm12 md4 xl4 class="pa-2">
+        <v-flex xs12 sm12 md4 xl4 class="pa-2 mt-4">
           <h5 class="text-h5">{{product.name}}</h5>
           <p>
             Brand:
@@ -45,10 +45,10 @@
                 <h4>Product details of {{product.name}}</h4>
               </v-flex>
               <v-flex xs12 sm12 md6 lg-6 md12 class="pa-4">
-                <p>{{product.details}}</p>
+                <p>{{product.description}}</p>
               </v-flex>
               <v-flex xs12 sm12 md6 lg-6 md12 class="pa-4">
-                <p>{{product.details}}</p>
+                <p>{{product.description}}</p>
               </v-flex>
               <v-flex xs12 md12 class="pa-2 grey lighten-4">
                 <p>{{productExtra}}</p>
@@ -66,15 +66,14 @@ export default {
   data() {
     return {
       quantity: 1,
-      product: {
-        name:
-          "X96 Air 4GB Amlogic Smart TV Box 8K Video Decode Android 9.0 TV Box 2.4G+5.8G WiFi Bluetooth LAN USB3.0",
-        details:
-          'Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an "advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency.',
-      },
       productExtra:
-        "Amlogic continues to dominate the TV box market with the release of a new S905X3 CPU. The X96 Air TV Box is one of the first of boxes to feature this new CPU, and it has already generated quite a stir among the TV box community. Will it have better performance than the previous S905X2, and how how will boxes carrying this new CPU cost. Some are of the belief that the new CPU is nothing new and it is the same S905X2 clocked at a higher speed. In this short article I will give you the information pertaining to this assumption and a break down of what the X96 Air has to offer.",
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla deleniti eveniet, quasi eaque unde commodi dolores cumque eius rerum itaque provident mollitia voluptas ut voluptatem quis voluptatibus laborum rem? Nisi asperiores, quis laudantium aliquam iste voluptatibus, fuga praesentium dicta illo saepe ex vero corporis nemo cum eligendi! Maxime officiis dignissimos ipsum labore autem maiores, sapiente minima excepturi quisquam similique eius harum sequi quidem repellendus deserunt tenetur deleniti fuga. Pariatur placeat cupiditate repudiandae fugit modi deserunt sit, repellendus temporibus? At dolore beatae quasi nisi esse quia inventore accusamus asperiores dignissimos eaque alias architecto numquam repellendus qui fugit amet dolor dolorum dicta, aliquid, et molestiae non repellat assumenda! Hic, sed in! Ea explicabo repellendus sequi dolore quas accusamus exercitationem illo minima eaque ducimus molestias quibusdam perferendis tempore necessitatibus assumenda animi, sapiente neque qui vitae eius voluptatibus. Porro dolore molestias expedita perferendis enim blanditiis, repudiandae non quod illum sit perspiciatis praesentium quidem officia laborum? Atque ipsam quia ducimus, a, at corrupti reprehenderit veritatis deserunt iusto similique quas commodi ipsa soluta id. Aspernatur voluptas qui, voluptates numquam tenetur placeat aperiam, earum ipsam est, nostrum deleniti atque ipsum quo expedita ad doloremque dolorum magnam enim assumenda aliquid maxime? Id adipisci eligendi illo. Adipisci, delectus qui",
     };
+  },
+  computed: {
+    product() {
+      return this.$store.getters.getProduct(this.$route.params.id);
+    },
   },
   methods: {
     decQuantity() {

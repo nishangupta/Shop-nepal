@@ -45,7 +45,7 @@ export default {
       price: "",
       description:
         "Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency.",
-      img: "product3.jpg",
+      img: "/product3.jpg",
       nameRules: [
         (v) => !!v || "Field is required",
         (v) => v.length >= 5 || "Minimum length is 5 characters",

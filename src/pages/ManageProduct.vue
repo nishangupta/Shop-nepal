@@ -8,7 +8,7 @@
             <v-toolbar-title>All Products</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
+            <v-dialog v-model="dialog" max-width="500px" persistent>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Add Product</v-btn>
               </template>
@@ -37,8 +37,9 @@
                 </v-card-text>
 
                 <v-card-actions>
+                  <v-btn color="blue darken-1" text @click="setPlaceHolders">set Default Value</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                  <v-btn color="deep-orange" text @click="close">Cancel</v-btn>
                   <v-btn color="blue darken-1" text @click="save" :loading="isLoading">Save</v-btn>
                 </v-card-actions>
               </v-card>
@@ -49,12 +50,7 @@
           <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
           <v-icon small @click="deleteItem(item)">delete</v-icon>
         </template>
-        <template v-slot:item.name="{ item }">
-          <v-subtitle>{{ item.name.slice(0,25) }}...</v-subtitle>
-        </template>
-        <template v-slot:item.description="{ item }">
-          <v-subtitle>{{ item.description.slice(0,35) }}...</v-subtitle>
-        </template>
+
         <template v-slot:no-data>
           <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
@@ -65,25 +61,27 @@
 
 <script>
 import db from "@/fb";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({
     isLoading: false,
     dialog: false,
     headers: [
       {
-        text: "Product Name ",
+        text: "Product Name",
         align: "start",
         sortable: false,
         value: "name",
       },
-      { text: "Img (g)", value: "img" },
-      { text: "Price (g)", value: "price" },
+      { text: "Img", value: "img" },
+      { text: "Price", value: "price" },
       { text: "Description", value: "description" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     products: [],
     editedIndex: -1,
     editedItem: {
+      id: null,
       name: "",
       img: "",
       price: "",
@@ -101,11 +99,15 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
+    ...mapGetters(["allProducts"]),
   },
 
   watch: {
     dialog(val) {
       val || this.close();
+    },
+    products() {
+      return this.products;
     },
   },
 
@@ -114,36 +116,11 @@ export default {
   },
 
   methods: {
+    ...mapActions(["deleteProduct"]),
     initialize() {
-      this.products = [
-        {
-          id: 1,
-          name:
-            "X96 Air 4GB Amlogic Smart TV Box 8K Video Decode Android 9.0 TV Box 2.4G+5.8G WiFi Bluetooth LAN USB3.0",
-          price: "2455",
-          description:
-            "Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency",
-          img: "/product.jpg",
-        },
-        {
-          id: 2,
-          name: "Samsung Galaxy A51 -6GB RAM // 128GB ROM // 48MP Quad Camera",
-          price: "65000",
-          description:
-            "Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency",
-          img: "/phone.jpg",
-        },
-        {
-          id: 3,
-          name: " Samsung M21 [6GB RAM// 128GB ROM]",
-          price: "25000",
-          description:
-            "Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency",
-          img: "/phone2.jpg",
-        },
-      ];
+      this.products = this.allProducts;
     },
-
+    //puts product in edit form inputs
     editItem(item) {
       this.editedIndex = this.products.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -151,9 +128,11 @@ export default {
     },
 
     deleteItem(item) {
-      const index = this.products.indexOf(item);
-      confirm("Are you sure you want to delete this product?") &&
-        this.products.splice(index, 1);
+      if (confirm("Are you sure you want to delete this product?")) {
+        this.deleteProduct(item.id);
+        this.products = this.products.filter((p) => p.id !== item.id);
+      }
+      return;
     },
 
     close() {
@@ -168,9 +147,18 @@ export default {
     save() {
       this.isLoading = true;
       if (this.editedIndex > -1) {
-        Object.assign(this.products[this.editedIndex], this.editedItem);
+        db.collection("products")
+          .doc(this.editedItem.id)
+          .update(this.editedItem)
+          .then(() => {
+            this.close();
+          });
+        let oldProduct = this.products.find((p) => p.id == this.editedItem.id);
+        Object.assign(oldProduct, this.editedItem);
       } else {
         //create and store in firebase
+        this.editedItem.img = "/" + this.editedItem.img;
+
         db.collection("products")
           .add({
             name: this.editedItem.name,
@@ -181,9 +169,17 @@ export default {
           .then(() => {
             this.close();
           });
-
-        this.products.push(this.editedItem);
       }
+    },
+    setPlaceHolders() {
+      Object.assign(this.editedItem, {
+        name:
+          "X96 Air 4GB Amlogic Smart TV Box 8K Video Decode Android 9.0 TV Box 2.4G+5.8G WiFi Bluetooth LAN USB3.0",
+        price: "24552",
+        description:
+          "Amlogic S905X3 applies quad-core Cortex-A55 processors, which is described as an advanced application processor designed for hybrid OTT/ IP Set-Top Box (STB) and high-end media box applications. The Cortex-A55 cores deliver up to twice the performance compared to Cortex-A53 in memory benchmarks, and a more typical 20 to 30% performance improvement for common tasks at the same frequency",
+        img: "product.jpg",
+      });
     },
   },
 };

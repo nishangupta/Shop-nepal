@@ -11,10 +11,18 @@
 
 <script>
 import Appbar from "./components/Appbar";
+import { mapActions } from "vuex";
 export default {
   name: "App",
   components: {
     Appbar,
+  },
+  methods: {
+    ...mapActions(["setProducts"]),
+  },
+
+  created() {
+    this.setProducts();
   },
 };
 </script>
