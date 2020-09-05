@@ -65,7 +65,7 @@
       </v-btn>
       <v-spacer></v-spacer>
 
-      <v-btn fab text>
+      <v-btn fab text router to="/shop/cart">
         <v-badge :content="cartCount" color="secondary">
           <v-icon>shopping_cart</v-icon>
         </v-badge>

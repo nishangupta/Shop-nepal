@@ -13,7 +13,7 @@
           </p>
           <v-divider></v-divider>
           <p class="secondary--text text-h4 mt-2">Rs. 10000</p>
-          <v-subtitle>Quantity</v-subtitle>
+          <v-subheader>Quantity</v-subheader>
           <div class="quantity-toggle">
             <v-btn @click="decQuantity()">&mdash;</v-btn>
             <input

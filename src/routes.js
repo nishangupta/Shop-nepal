@@ -7,6 +7,7 @@ import Product from './pages/Product'
 import AddProduct from './pages/AddProduct'
 import ManageProduct from './pages/ManageProduct'
 import LoginPage from './pages/LoginPage'
+import Cart from './pages/Cart'
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     path: '/shop/product/:id',
     component: Product,
     name: 'product',
+  },
+  {
+    path: '/shop/cart',
+    component: Cart,
+    name: 'cart',
   },
   {
     path: '/product/add-product',

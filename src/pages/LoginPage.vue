@@ -20,6 +20,7 @@
                   :rules="passwordRules"
                   v-model="password"
                 ></v-text-field>
+                <br />
                 <v-btn
                   class="primary darken-1"
                   text
@@ -56,7 +57,7 @@
                 <br />
                 <br />
                 <v-btn
-                  class="secondary darken-1"
+                  class="primary lighten-1"
                   text
                   @click.stop="signinUser()"
                   :loading="isLoading"
@@ -135,13 +136,13 @@ export default {
 .form-over {
   -moz-box-shadow: -2px -1px 16px -9px rgba(0, 0, 0, 0.74);
   box-shadow: -2px -1px 16px -9px rgba(0, 0, 0, 0.74);
-  background: linear-gradient(to right, #006b81, #b86349);
+  background: linear-gradient(to right, #39a299, #016c82);
 
   color: white;
 }
 .form-over.signup {
   color: white;
-  background: linear-gradient(to right, #659173, #006b81);
+  background: linear-gradient(to right, #006b81, #3aa39a);
 }
 .form-below {
   -moz-box-shadow: -2px -1px 16px -9px rgba(0, 0, 0, 0.74);
