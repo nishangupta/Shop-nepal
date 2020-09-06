@@ -12,7 +12,7 @@
             <span class="primary--text">No Brand</span>
           </p>
           <v-divider></v-divider>
-          <p class="secondary--text text-h4 mt-2">Rs. 10000</p>
+          <p class="secondary--text text-h4 mt-2">Rs. {{formatPrice(product.price)}}</p>
           <v-subheader>Quantity</v-subheader>
           <div class="quantity-toggle">
             <v-btn @click="decQuantity()">&mdash;</v-btn>
@@ -27,7 +27,7 @@
           </div>
           <v-layout row class="my-5" justify-space-between>
             <v-flex>
-              <v-btn color="secondary" block>Add to cart</v-btn>
+              <v-btn color="secondary" block @click="addToCart(product.id)">Add to cart</v-btn>
             </v-flex>
             <v-flex>
               <v-btn color="primary" block>Buy now</v-btn>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -76,9 +77,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["addToCart"]),
     decQuantity() {
       if (this.quantity <= 1) return;
       this.quantity--;
+    },
+    formatPrice(value) {
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
 };

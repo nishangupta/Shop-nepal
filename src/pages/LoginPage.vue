@@ -44,7 +44,7 @@
               <v-btn class="ghost" @click="signupToggle()">Sign Up</v-btn>
             </v-flex>
             <v-flex xs12 sm12 md12 lg12 class="pa-5 form-below">
-              <v-form ref="signinForm">
+              <v-form ref="loginForm">
                 <h1>Sign in</h1>
                 <v-text-field type="email" label="Email" v-model="email" :rules="emailRules"></v-text-field>
                 <v-text-field
@@ -72,16 +72,16 @@
 </template>
 
 <script>
+import db, { fauth } from "@/fb";
 export default {
   data() {
     return {
       isLoading: false,
       signinPage: false,
       signupPage: true,
-      name: "",
       email: "",
       password: "",
-
+      name: "",
       nameRules: [
         (v) => !!v || "Name is required",
         (v) => v.length >= 3 || "",
@@ -104,10 +104,18 @@ export default {
     signinToggle() {
       this.signinPage = true;
       this.signupPage = false;
+      this.clearFields();
     },
     signupToggle() {
       this.signupPage = true;
       this.signinPage = false;
+      this.clearFields();
+    },
+    clearFields() {
+      this.email = "";
+      this.password = "";
+      this.name = "";
+      this.isLoading = false;
     },
     validateEmail(v) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -115,18 +123,40 @@ export default {
     },
     //user signup and logins
     signupUser() {
+      this.isLoading = true;
       if (this.$refs.createForm.validate()) {
-        alert(this.email);
+        fauth
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then((cred) => {
+            return db.collection("users").doc(cred.user.uid).set({
+              name: this.name,
+            });
+          })
+          .then(
+            () => {
+              this.$router.push("/");
+            },
+            (err) => alert(err.message)
+          );
       } else {
-        alert("fail");
+        alert("Invalid details entered!");
       }
+      this.isLoading = false;
     },
     signinUser() {
-      if (this.$refs.signinFrom.validate()) {
-        alert(this.email);
+      this.isLoading = true;
+      if (this.$refs.loginForm.validate()) {
+        this.isLoading = true;
+        fauth
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(() => {
+            this.$router.push("/");
+          })
+          .catch((err) => alert(err.message));
       } else {
-        alert("fail");
+        alert("Invalid details entered!");
       }
+      this.isLoading = false;
     },
   },
 };

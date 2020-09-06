@@ -41,7 +41,16 @@
               <v-list-item-title>{{item.text}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <!-- static logout link -->
         </template>
+        <v-list-item @click="logout">
+          <v-list-item-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -60,7 +69,7 @@
         class="hidden-md-and-down"
         v-model="searchInput"
       ></v-text-field>
-      <v-btn text class="hidden-md-and-down" large>
+      <v-btn text class="hidden-md-and-down" router to="/" large>
         <v-icon>search</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -88,6 +97,15 @@
                 <v-list-item-title>{{item.text}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+            <!-- logout button -->
+            <v-list-item @click="logout" v-if="isLoggedIn">
+              <v-list-item-action>
+                <v-icon>exit_to_app</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-menu>
       </div>
@@ -96,13 +114,16 @@
 </template>
 
 <script>
+import { fauth } from "@/fb";
 export default {
   name: "Appbar",
   data() {
     return {
       drawer: null,
       searchInput: "",
-      cartCount: 2,
+      isLoggedIn: false,
+      currentUser: false,
+
       appDrawer: [
         { icon: "shop", text: "Shop Nepal", route: "/" },
         { icon: "admin_panel_settings", text: "My Account", route: "/profile" },
@@ -130,14 +151,13 @@ export default {
           text: "Products",
           model: false,
           children: [
-            { text: "Manage products", route: "/product/manage-products" },
+            { text: "Manage product", route: "/product/manage-product" },
             { text: "Add Product", route: "/product/add-product" },
           ],
         },
         { icon: "settings", text: "Settings", route: "/settings" },
         { icon: "message", text: "Send feedback", route: "/message" },
         { icon: "live_help", text: "Help", route: "/help" },
-        { icon: "exit_to_app", text: "Logout", route: "/logout" },
       ],
       account_nav_list: [
         { icon: "account_box", text: "Manage your account", route: "/profile" },
@@ -147,13 +167,25 @@ export default {
           text: "My wishlist & followed stores",
           route: "/wishlist",
         },
-        { icon: "exit_to_app", text: "Logout", route: "/logout" },
       ],
     };
   },
+  created() {
+    if (fauth.currentUser) {
+      this.currentUser = fauth.currentUser;
+      this.isLoggedIn = true;
+    }
+  },
+  computed: {
+    cartCount() {
+      return this.$store.getters.cartItemCount;
+    },
+  },
   methods: {
-    showAl() {
-      alert(123);
+    logout() {
+      fauth.signOut().then(() => {
+        this.$router.push("/login");
+      });
     },
   },
 };
