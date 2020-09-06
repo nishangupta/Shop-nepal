@@ -19,12 +19,11 @@ export default {
     Appbar,
   },
   methods: {
-    ...mapActions(["setProducts", "setCart"]),
+    ...mapActions(["setProducts"]),
   },
 
   created() {
     this.setProducts();
-    this.setCart();
   },
 };
 </script>

@@ -69,7 +69,7 @@
         class="hidden-md-and-down"
         v-model="searchInput"
       ></v-text-field>
-      <v-btn text class="hidden-md-and-down" router to="/" large>
+      <v-btn text class="hidden-md-and-down" large>
         <v-icon>search</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -115,6 +115,7 @@
 
 <script>
 import { fauth } from "@/fb";
+import { mapActions } from "vuex";
 export default {
   name: "Appbar",
   data() {
@@ -182,8 +183,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["clearCart"]),
     logout() {
       fauth.signOut().then(() => {
+        this.clearCart();
         this.$router.push("/login");
       });
     },

@@ -96,6 +96,7 @@ export default {
       "cartDecrement",
       "removeCart",
       "clearCart",
+      "setCart",
     ]),
     removeFromCart(id) {
       if (confirm("Are you sure to remove from cart?")) {
@@ -111,6 +112,9 @@ export default {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
+  },
+  created() {
+    this.setCart();
   },
 };
 </script>

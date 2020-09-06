@@ -93,8 +93,24 @@ const actions = {
         )
     })
   },
-  clearCart(state) {
-    state.cart = []
+  //removes cart products for firebase
+  removeAllCart({ commit }) {
+    const user = fauth.currentUser.uid
+    db.collection('cart')
+      .doc(user)
+      .update({
+        products: [],
+      })
+      .then(
+        () => {
+          commit('CLEAR_ALL_CART')
+        },
+        (err) => alert(err.message)
+      )
+  },
+  //removes cart from state
+  clearCart({ commit }) {
+    commit('CLEAR_ALL_CART')
   },
 }
 
@@ -146,6 +162,9 @@ const mutations = {
   },
   REMOVE_FROM_CART(state, id) {
     state.cart = state.cart.filter((p) => p.id !== id)
+  },
+  CLEAR_ALL_CART(state) {
+    state.cart = []
   },
 }
 
