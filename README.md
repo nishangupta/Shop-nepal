@@ -15,4 +15,4 @@
 </p>
 
  Project live at : <a href="https://shop-nepal.web.app/">ShopNepal.com</a>
-  My website : <a href="http://nishantdev.epizy.com/">NishantDev</a>
+ 
